@@ -52,18 +52,26 @@ async function main() {
         return highest
     }
 
+    const highestNums = stocks.map(stock => getHighest(stock.values))
+    const highestStockName = highestNums.map(Number)
+    const maxStock = Math.max(...highestStockName)
+    
+
     new Chart(highestPriceChartCanvas.getContext('2d'), {
         type: 'bar',
         data: {
-            labels: stocks.map( stock => stock.meta.symbol),
+            labels: stocks.map(stock => stock.meta.symbol),
             datasets: [{
-                label: 'Highest',
-                data: stocks.map(stock => getHighest(stock.values)),
+                label: maxStock,
+                data: highestNums,
                 backgroundColor: stocks.map(stock => getColor(stock.meta.symbol)),
                 borderColor: stocks.map(stock => getColor(stock.meta.symbol)),
             }]
 
         },
+        options: {
+            indexAxis: 'y'
+        }
     }) 
 }
 

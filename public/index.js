@@ -4,9 +4,9 @@ async function main() {
     const highestPriceChartCanvas = document.querySelector('#highest-price-chart');
     const averagePriceChartCanvas = document.querySelector('#average-price-chart');
 
-    let response = await fetch("https://api.twelvedata.com/time_series?symbol=GME,MSFT,DIS,BNTX&interval=1day&apikey=605f1e31b8284461a6fab7dff2d8c787")
+    let response = await fetch("https://api.twelvedata.com/time_series?symbol=GME,MSFT,DIS,BNTX&interval=1day&apikey=7197f659335a4d8297159cfd119734b3")
     let result = await response.json()
-    
+
     const { GME, MSFT, DIS, BNTX } = mockData;
 
     const stocks = [GME, MSFT, DIS, BNTX];
@@ -73,6 +73,29 @@ async function main() {
             indexAxis: 'y'
         }
     }) 
+
+    function getAverage(values) {
+        let total = 0
+        values.forEach(value => {
+            total += parseFloat(value.high)
+        })
+        return total / values.length
+    }
+
+    new Chart(averagePriceChartCanvas.getContext('2d'), {
+        type: 'pie',
+        data: {
+            labels: stocks.map(stock => stock.meta.symbol),
+            datasets: [{
+                label: 'Average',
+                data: stocks.map(stock => getAverage(stock.values)),
+                backgroundColor: stocks.map(stock => getColor(stock.meta.symbol)),
+                borderColor: stocks.map(stock => getColor(stock.meta.symbol)),
+            }]
+        },
+    })
+
+
 }
 
 main()

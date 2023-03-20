@@ -91,6 +91,7 @@ async function main() {
                 data: stocks.map(stock => getAverage(stock.values)),
                 backgroundColor: stocks.map(stock => getColor(stock.meta.symbol)),
                 borderColor: stocks.map(stock => getColor(stock.meta.symbol)),
+                hoverOffset: 40,
             }]
         },
     })
